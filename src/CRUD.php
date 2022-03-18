@@ -93,7 +93,7 @@ class CRUD
 
     public function upsert($object, $field, $id, array $data)
     {
-        $url = "{$this->instance_url}/services/data/v39.0/sobjects/{$object}/{$field}/{$id}";
+        $url = "{$this->instance_url}/services/data/v54.0/sobjects/{$object}/{$field}/{$id}";
 
         $client = new Client();
 
@@ -107,10 +107,14 @@ class CRUD
 
         $status = $request->getStatusCode();
 
-        if ($status != 204 && $status != 201) {
+        if ($status != 200 && $status != 204 && $status != 201) {
             throw new SalesforceException(
                 "Error: call to URL {$url} failed with status {$status}, response: {$request->getReasonPhrase()}"
             );
+        }
+
+        if($status === 200) {
+          return json_decode($request->getBody(), true);
         }
 
         return $status;
