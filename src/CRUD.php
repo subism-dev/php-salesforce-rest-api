@@ -113,7 +113,7 @@ class CRUD
             );
         }
 
-        if($status === 200) {
+        if($status === 200 || $status === 201) {
           return json_decode($request->getBody(), true);
         }
 
